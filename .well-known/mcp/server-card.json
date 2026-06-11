@@ -2,7 +2,7 @@
   "name": "leadpipe-mcp",
   "displayName": "LeadPipe MCP",
   "description": "AI lead qualification engine with ICP pre-filter, 6-dimension scoring (0-100), company enrichment via Hunter.io, and CRM export to HubSpot/Pipedrive/CSV. 10 tools, 3 resources, 3 prompts.",
-  "version": "1.4.0",
+  "version": "1.4.2",
   "license": "MIT",
   "repository": "https://github.com/enzoemir1/leadpipe-mcp",
   "tools": [
