@@ -182,7 +182,7 @@ server.registerTool(
   {
     title: 'Enrich Lead',
     description:
-      'Derive and attach company data to an existing lead using the email domain: company name, industry, size, country, website, estimated headcount, and common tech stack. Does not call external APIs — enrichment is driven by the built-in domain knowledge base. Updates the lead in place and returns the enriched record, ready for lead_score. Run this before lead_score for the best qualification accuracy.',
+      'Derive and attach company data to an existing lead using the email domain: company name, industry, size, country, website, estimated headcount, and common tech stack. Uses Hunter.io enrichment when HUNTER_API_KEY is set, otherwise built-in domain heuristics. Updates the lead in place and returns the enriched record, ready for lead_score. Run this before lead_score for the best qualification accuracy.',
     inputSchema: z.object({
       lead_id: z.string().uuid().describe('UUID of the lead to enrich (returned by lead_ingest or lead_search)'),
     }),
@@ -280,7 +280,7 @@ server.registerTool(
   {
     title: 'Export Leads',
     description:
-      'Push leads to an external destination. target must be one of "hubspot", "pipedrive", "google_sheets", "csv", or "json". For CRM targets (hubspot, pipedrive) the respective API key env var must be set (HUBSPOT_API_KEY, PIPEDRIVE_API_TOKEN) — if missing, the tool returns a dry-run payload instead of erroring. Filter the export via lead_ids (explicit list) or min_score (everything above threshold). Returns {target, count, summary, errors?}.',
+      'Push leads to an external destination. target must be one of "hubspot", "pipedrive", "google_sheets", "csv", or "json". For CRM targets (hubspot, pipedrive) the respective API key env var must be set (HUBSPOT_API_KEY, PIPEDRIVE_API_KEY) — if missing, the tool returns a dry-run payload instead of erroring. Filter the export via lead_ids (explicit list) or min_score (everything above threshold). Returns {target, count, summary, errors?}.',
     inputSchema: LeadExportInputSchema,
     annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
   },

@@ -184,7 +184,7 @@ export type ExportTarget = z.infer<typeof ExportTargetSchema>;
 /** Input schema for exporting leads to CRM or file. */
 export const LeadExportInputSchema = z.object({
   lead_ids: z.array(z.string()).optional().describe('Explicit list of lead UUIDs to export. If omitted, every lead matching min_score (or all leads, when min_score is also omitted) is exported.'),
-  target: ExportTargetSchema.describe('Where to send the leads. "hubspot" / "pipedrive" require HUBSPOT_API_KEY / PIPEDRIVE_API_TOKEN env vars — without them, the tool returns a dry-run payload instead of erroring. "google_sheets" requires GOOGLE_SHEETS_CREDENTIALS. "csv" / "json" produce inline output you can pipe to disk.'),
+  target: ExportTargetSchema.describe('Where to send the leads. "hubspot" / "pipedrive" require HUBSPOT_API_KEY / PIPEDRIVE_API_KEY env vars — without them, the tool returns a dry-run payload instead of erroring. "google_sheets" requires GOOGLE_SHEETS_CREDENTIALS. "csv" / "json" produce inline output you can pipe to disk.'),
   min_score: z.number().optional().describe('Inclusive minimum score for inclusion. Use 60+ for "qualified-only" exports. Ignored when lead_ids is provided.'),
 });
 export type LeadExportInput = z.infer<typeof LeadExportInputSchema>;
