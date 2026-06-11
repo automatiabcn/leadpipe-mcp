@@ -57,6 +57,16 @@ Add to your MCP client config:
 
 ## Tools
 
+### lead_demo_seed
+
+Seed the pipeline with a realistic demo dataset — 14 leads across 5 archetypes (hot decision-makers, warm mid-level, cold junior/small-co, raw unenriched, and disqualified) — so every downstream tool returns meaningful output without any API keys. Safe to call multiple times; each call appends a fresh batch with new UUIDs.
+
+```json
+{}
+```
+
+Returns: counts by status plus `sample_lead_ids` you can feed into `lead_enrich`, `lead_score`, or `lead_export`.
+
 ### lead_qualify
 
 Filter leads against your Ideal Customer Profile **before** spending any enrichment credits. Uses only locally-available signals — email domain, job title, country, industry, company size, tech stack — so nothing is charged to Hunter.io, HubSpot, or Pipedrive.
@@ -250,14 +260,12 @@ LeadPipe extracts the domain from the lead's email and looks up company data:
 
 ## Pricing
 
-| Tier | Price | Leads/month | Features |
-|------|-------|-------------|----------|
-| Free | $0 | 25 | Ingest, manual scoring, ICP pre-qualification |
-| Pro | $19/mo | 300 | AI scoring, Hunter.io enrichment, CRM export |
-| Business | $39/mo | 2,500 | Pipeline analytics, custom rules, priority support |
-| Agency | $99/mo | 10,000 | Multi-client, white-label exports |
+| Tier | Price | Tools | Features |
+|------|-------|-------|----------|
+| Free | €0 | `lead_demo_seed`, `lead_ingest`, `lead_batch_ingest`, `lead_search`, `lead_score`, `config_scoring` | Ingest, manual scoring, ICP pre-qualification |
+| Pro | **€19** lifetime | + `lead_qualify`, `lead_enrich`, `lead_export`, `pipeline_stats` | AI scoring, Hunter.io enrichment, CRM export, pipeline analytics |
 
-Available on the [MCPize Marketplace](https://mcpize.com).
+One-time **€19** lifetime license (3 machines) — no subscription. See **[Pro License](#pro-license)** below to buy and activate.
 
 ---
 
