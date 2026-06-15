@@ -78,7 +78,11 @@ export class Storage {
   }
 
   private async writeLeads(leads: Lead[]): Promise<void> {
-    await fs.writeFile(this.leadsPath, JSON.stringify(leads, null, 2), 'utf-8');
+    // Atomic write (temp + rename) so a crash mid-write can't corrupt the PII
+    // store; the temp inherits the owner-only 0600 mode and rename preserves it.
+    const tmp = `${this.leadsPath}.tmp`;
+    await fs.writeFile(tmp, JSON.stringify(leads, null, 2), { encoding: 'utf-8', mode: 0o600 });
+    await fs.rename(tmp, this.leadsPath);
   }
 
   private async readConfig(): Promise<ScoringConfig> {
@@ -88,7 +92,9 @@ export class Storage {
   }
 
   private async writeConfig(config: ScoringConfig): Promise<void> {
-    await fs.writeFile(this.configPath, JSON.stringify(config, null, 2), 'utf-8');
+    const tmp = `${this.configPath}.tmp`;
+    await fs.writeFile(tmp, JSON.stringify(config, null, 2), { encoding: 'utf-8', mode: 0o600 });
+    await fs.rename(tmp, this.configPath);
   }
 
   // ── Lead CRUD ─────────────────────────────────────────────────
