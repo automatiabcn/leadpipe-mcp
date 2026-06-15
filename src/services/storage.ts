@@ -47,18 +47,25 @@ export class Storage {
 
   private async init(): Promise<void> {
     if (this.initialized) return;
-    await fs.mkdir(this.dataDir, { recursive: true });
+    // Lead records are PII (names, emails, enriched company data). Keep the
+    // directory and files owner-only so a clone running on a shared machine
+    // doesn't leave them world-readable under the default umask.
+    await fs.mkdir(this.dataDir, { recursive: true, mode: 0o700 });
     try {
       await fs.access(this.leadsPath);
     } catch {
-      await fs.writeFile(this.leadsPath, '[]', 'utf-8');
+      await fs.writeFile(this.leadsPath, '[]', { encoding: 'utf-8', mode: 0o600 });
     }
     try {
       await fs.access(this.configPath);
     } catch {
       const defaults = ScoringConfigSchema.parse({});
-      await fs.writeFile(this.configPath, JSON.stringify(defaults, null, 2), 'utf-8');
+      await fs.writeFile(this.configPath, JSON.stringify(defaults, null, 2), { encoding: 'utf-8', mode: 0o600 });
     }
+    // Tighten perms on pre-existing files too (writeFile's mode only applies on
+    // creation). Best-effort: ignore platforms/filesystems without chmod.
+    await fs.chmod(this.leadsPath, 0o600).catch(() => {});
+    await fs.chmod(this.configPath, 0o600).catch(() => {});
     this.initialized = true;
   }
 
